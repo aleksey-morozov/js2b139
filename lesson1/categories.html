@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Отрисовка списка категорий с произвольным кол-вом уровней подкатегорий</title>
+    <script>
+
+        // функция должна вернуть строку с разметкой мноугоровневого списка категорий ul li
+        const generateCategoriesList = function fn(categories) {
+            let html = "<ul>";
+
+            for (const item of categories) {
+                html += "<li>" + item.title;
+                if (item.children.length > 0) {
+                    html += fn(item.children);
+                }
+                html += "</li>";
+            }
+
+            html += "</ul>";
+            return html;
+        };
+
+        function prepareTree(categories, id = 0) {
+            let results = [];
+            categories.forEach((item) => {
+                if (!id) {
+                    if (item.parent === null) {
+                        item.children = prepareTree(categories, item.id);
+                        results.push(item);
+                    }
+                } else if (id === item.parent) {
+                    results.push(item);
+                    item.children = prepareTree(categories, item.id);
+                }
+            });
+            return results;
+        }
+
+        fetch("./categories.json")
+            .then(response => response.json())
+            .then(data => {
+                // data - массив категорий
+                document.write(generateCategoriesList(data));
+            });
+
+        fetch("./data.json")
+            .then(response => response.json())
+            .then(data => {
+                const prepared = prepareTree(data);
+                if (prepared.length > 0) {
+                    document.write(generateCategoriesList(prepared));
+                }
+            });
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>

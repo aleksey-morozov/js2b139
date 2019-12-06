@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "title": "Ноутбуки",
+    "children": [
+      {
+        "id": 3,
+        "title": "Ультрабуки",
+        "children": [
+          {
+            "id": 7,
+            "title": "MacBook",
+            "children": [
+              {
+                "id": 13,
+                "title": "Уценка",
+                "children": []
+              },
+              {
+                "id": 14,
+                "title": "Новые модели",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": 8,
+            "title": "Xiaomi",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Офисные ноутбуки",
+        "children": []
+      },
+      {
+        "id": 5,
+        "title": "Игровые",
+        "children": []
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Смартфоны",
+    "children": []
+  },
+  {
+    "id": 10,
+    "title": "Телевизоры",
+    "children": [
+      {
+        "id": 11,
+        "title": "Smart TV",
+        "children": []
+      },
+      {
+        "id": 12,
+        "title": "Домашний кинотеатр",
+        "children": []
+      }
+    ]
+  }
+]

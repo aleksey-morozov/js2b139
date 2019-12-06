@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    class User {
+        constructor(name, birthday) {
+            this.name = name;
+            this.birthday = birthday;
+        }
+
+        get age() {
+            const birthday = new Date(this.birthday);
+            return new Date().getFullYear() - birthday.getFullYear();
+        }
+    }
+
+    class Admin extends User {
+        constructor(name, birthday) {
+            super(name, birthday);
+        }
+
+        kill(user) {
+            if (!user || typeof user !== 'object') {
+                throw new TypeError("Необходимо передать объект");
+            }
+
+            if (user instanceof Admin) {
+                throw new Error("Недостаточно прав");
+            } else if (user instanceof User) {
+                console.log("Пользователь убит");
+            }
+        }
+    }
+
+    const birthday = new Date(2000, 5, 11);
+    const john = new User("John Doe", birthday);
+    console.log(john.age);
+    const admin = new Admin("Martin Luter", birthday);
+    admin.kill(admin); // ошибка
+    admin.kill(5); // ошибка
+    admin.kill(null); // ошибка
+    admin.kill(john); // Пользователь John Doe убит.
+</script>
+</body>
+</html>

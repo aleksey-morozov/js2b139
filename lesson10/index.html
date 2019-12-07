@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>Тренажер для слов</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <style>
+        .letter {
+            margin-right: 5px;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -11,10 +16,9 @@
 
     <div class="card card-default mb-4">
         <div class="card-body">
-            <div>Задача <span id="current_question">1</span> из <span id="total_questions">10</span></div>
+            <div>Задача <span id="current_question"></span> из <span id="total_questions"></span></div>
             <div class="lead mb-3">Соберите слово по буквам</div>
             <div id="answer">
-
             </div>
         </div>
     </div>

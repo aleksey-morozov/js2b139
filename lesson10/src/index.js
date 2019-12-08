@@ -1,25 +1,43 @@
 import Service from "./game/Service";
 import App from "./game/App";
 
+let app = null;
+init();
+
 // аргументом передаем экземпляр класса Service
-const app = new App(new Service());
+function init() {
+   app = new App(new Service());
+   app.on("ready", function () {
+      const taskData = app.task.getContent();
+      if (taskData.data.question !== undefined && taskData.data.question.length > 0) {
+         drawButtons(taskData.data.question);
+         drawQuestionNumbers();
+      }
+   });
 
-app.on("ready", function () {
-   const taskData = this.task.getContent();
-   if (taskData.data.question !== undefined && taskData.data.question.length > 0) {
-      drawButtons(taskData.data.question);
-      drawQuestionNumbers();
-   }
-});
+   app.on('task:changed', function () {
+      clearAnswer();
+      if (app.taskNumber > app.totalTasks) {
+         showStats();
+      } else {
+         const taskData = this.task.getContent();
+         if (taskData.data.question !== undefined && taskData.data.question.length > 0) {
+            drawButtons(taskData.data.question);
+            drawQuestionNumbers();
+         }
+      }
+   });
+}
 
-app.on('task:changed', function () {
-   const taskData = this.task.getContent();
-   if (taskData.data.question !== undefined && taskData.data.question.length > 0) {
-      drawButtons(taskData.data.question);
-      drawQuestionNumbers();
-   }
-   clearAnswer();
-});
+function showStats() {
+   const el = document.querySelector('#letters');
+   el.innerHTML = '';
+   const btnEl = document.createElement('button');
+   btnEl.classList.add('btn', 'btn-primary', 'repeat-button');
+   btnEl.innerText = 'Начать заново';
+   btnEl.addEventListener('click', init);
+   el.appendChild(btnEl);
+}
 
 function drawButtons(buttons) {
    const el = document.querySelector('#letters');
@@ -38,8 +56,9 @@ function buttonClick(event) {
    const result = app.checkAnswer(letter);
    if (result) {
       event.target.remove();
-      addAnswer(letter);
+      addAnswer();
    } else {
+      app.errors++;
       errorClick(event.target);
    }
 }
@@ -53,11 +72,17 @@ function errorClick(el) {
    }, 300);
 }
 
-function addAnswer(letter) {
-   const btn = document.createElement('div');
-   btn.classList.add('btn', 'btn-success', 'letter');
-   btn.innerHTML = letter;
-   document.querySelector('#answer').appendChild(btn);
+function addAnswer() {
+   if (app.task) {
+      const answer = [...app.task.answer];
+      document.querySelector('#answer').innerHTML = '';
+      for (const letter of answer) {
+         const btn = document.createElement('div');
+         btn.classList.add('btn', 'btn-success', 'letter');
+         btn.innerHTML = letter;
+         document.querySelector('#answer').appendChild(btn);
+      }
+   }
 }
 
 function drawQuestionNumbers() {

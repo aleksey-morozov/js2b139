@@ -7,6 +7,9 @@ export default class App {
         this._tasks = [];
         this._currentTaskNumber = 0;
         this._listeners = new Map();
+        this._stats = [];
+        this._timerStart = '';
+        this.errors = 0;
 
         if (this._service.hasRestoreData()) {
             // сообщить о возможности восстановления
@@ -45,13 +48,32 @@ export default class App {
         }
     }
 
+    _startStat() {
+        this._timerStart = new Date();
+    }
+
+    _saveStats() {
+        this._stats.push({
+            errors: this.errors,
+            start: this._timerStart,
+            end: new Date(),
+        });
+        this._timerStart = '';
+        this.errors = 0;
+    }
+
     checkAnswer(answer) {
+        if (!this._timerStart) {
+            this._startStat();
+        }
         const result = this.task.check(answer);
         if (result === "success") {
+            this._notify("task:success");
             return true;
         }
         if (result === "completed") {
             this._currentTaskNumber++;
+            this._saveStats();
             this._notify("task:changed");
             return true;
         }
@@ -59,7 +81,7 @@ export default class App {
     }
 
     getStats() {
-
+        return this._stats;
     }
 
     save() {

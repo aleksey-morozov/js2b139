@@ -10,10 +10,14 @@ export default class Task {
         return this._word[this._current];
     }
 
+    get answer() {
+        return this._answer;
+    }
+
     check(answer) {
         if (answer === this._currentLetter) {
-            this._current++;
             this._answer += this._currentLetter;
+            this._current++;
             if (this._current >= this._word.length) {
                 return "completed";
             }

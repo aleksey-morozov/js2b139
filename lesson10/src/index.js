@@ -32,6 +32,24 @@ function init() {
 function showStats() {
    const el = document.querySelector('#letters');
    el.innerHTML = '';
+
+   const stats = app.getStats();
+   if (stats.length > 0) {
+      let fullTime = 0;
+      let errors = 0;
+
+      stats.forEach((item) => {
+         const startTime = new Date(item.start).getTime();
+         const endTime = new Date(item.end).getTime();
+         fullTime += (endTime - startTime) / 1000;
+         errors += item.errors;
+      });
+
+      const statEl = document.createElement('div');
+      statEl.innerHTML = `Всего ошибок: ${errors} Секунд затрачено: ${fullTime}`;
+      el.appendChild(statEl);
+   }
+
    const btnEl = document.createElement('button');
    btnEl.classList.add('btn', 'btn-primary', 'repeat-button');
    btnEl.innerText = 'Начать заново';
